@@ -16,7 +16,6 @@ print(API_KEY)
 
 
 class CovidStatsBot():
-    
     def __init__(self, offset_value=None) -> None:
         self.base_url = f"https://api.telegram.org/bot{API_KEY}/"
         self.get_updated()
@@ -31,43 +30,41 @@ class CovidStatsBot():
             r = requests.get(self.full_url)
             self.rec_data = r.json()
             return self.rec_data
-        except:
+        except Exception:
             print("get_upated() got errors")
 
     def lastUpdate_id(self):
         try:
             self.update_id = self.rec_data["result"][-1]["update_id"]
             return self.update_id
-        except:
+        except Exception:
             return None
 
     def getCurrentChat_id(self):
         try:
             self.chat_id = self.rec_data["result"][-1]["message"]["chat"]["id"]
             return self.chat_id
-        except:
+        except Exception:
             return None
 
     def getLastmssg(self):
         try:
             self.last_recmssg = self.rec_data["result"][-1]["message"]["text"]
             return self.last_recmssg
-        except:
+        except Exception:
             print("Something wrong in Vaccineinfo()")
             return None
 
     def mssg_send(self, chatid, mssg):
         try:
             self.full_url = f"{self.base_url}sendMessage?chat_id={chatid}&text={mssg}"
-            resp = requests.get(self.full_url)
+            resp = requests.post(self.full_url)
             if str(resp) != "<Response [200]>":
                 print(f"mssg not sent successfully !!\n ERROR CODE is {resp}")
             else:
                 print(f"mssg sent successfully: {mssg}")
-        except:
+        except Exception:
             print("mss_send() didn't execute properly")
-
-
 
 
 obj1 = CovidStatsBot()

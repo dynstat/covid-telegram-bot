@@ -24,5 +24,5 @@ def vaccineSlotsInfo(pin, date=thedate):
 
             info_list.append(slot)
         return info_list
-    except:
+    except Exception:
         return None
