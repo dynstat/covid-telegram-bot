@@ -5,3 +5,4 @@ Scripts/
 .dist/
 .vscode/
 pyvenv.cfg
+config.cfg
