@@ -1,6 +1,8 @@
 
+from time import sleep
 import requests
 import configparser as cfg
+import threading
 # ------------------------------------------------------------------------------
 
 
@@ -19,6 +21,9 @@ class CovidStatsBot():
     def __init__(self, offset_value=None) -> None:
         self.base_url = f"https://api.telegram.org/bot{API_KEY}/"
         self.get_updated()
+        self.visited = []
+        t_list_cleaner = threading.Thread(target=self.list_cleaner_loop)
+        t_list_cleaner.start()
 
     def get_updated(self, offset_value=None):
         try:
@@ -65,6 +70,12 @@ class CovidStatsBot():
                 print(f"mssg sent successfully: {mssg}")
         except Exception:
             print("mss_send() didn't execute properly")
+
+    def list_cleaner_loop(self):
+        while True:
+            if len(self.visited > 50):
+                self.visited.clear()
+            sleep(200)
 
 
 obj1 = CovidStatsBot()
