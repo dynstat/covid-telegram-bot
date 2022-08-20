@@ -93,7 +93,7 @@ while True:
                         f'Mssg sent to the user {item_username} Please enter the command "/pincode" or "pincode"')
 
             last_update_id = last_update_id + 1
-    except:
+    except Exception:
         print("Update is empty...\n\n")
 
 

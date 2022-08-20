@@ -10,6 +10,8 @@ thedate = today.strftime("%d-%m-%Y")
 
 pincode = '110085'
 
+# https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=110088&date=20-08-2022
+
 
 def vaccineSlotsInfo(pin, date=thedate):
     try:
@@ -26,3 +28,7 @@ def vaccineSlotsInfo(pin, date=thedate):
         return info_list
     except Exception:
         return None
+
+
+if __name__ == "__main__":
+    print(vaccineSlotsInfo(pincode))

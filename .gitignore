@@ -4,4 +4,5 @@ Scripts/
 .env
 .dist/
 .vscode/
-pyvenv.cfg
+*.cfg
+

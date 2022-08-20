@@ -12,7 +12,7 @@ def read_API_fromConfig(config):
 
 API_KEY = read_API_fromConfig('config.cfg')
 
-print(API_KEY)
+# print(API_KEY)
 
 
 class CovidStatsBot():
@@ -32,6 +32,8 @@ class CovidStatsBot():
             return self.rec_data
         except Exception:
             print("get_upated() got errors")
+
+    def
 
     def lastUpdate_id(self):
         try:
@@ -68,3 +70,6 @@ class CovidStatsBot():
 
 
 obj1 = CovidStatsBot()
+
+if __name__ == "__main__":
+    print(obj1.get_updated())
