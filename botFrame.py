@@ -33,8 +33,6 @@ class CovidStatsBot():
         except Exception:
             print("get_upated() got errors")
 
-    def
-
     def lastUpdate_id(self):
         try:
             self.update_id = self.rec_data["result"][-1]["update_id"]
