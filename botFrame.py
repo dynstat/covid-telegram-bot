@@ -1,8 +1,16 @@
 
+from datetime import date
+from logging import exception
 from time import sleep
 import requests
 import configparser as cfg
 import threading
+from cowinAPI import vaccineSlotsInfo
+
+today = date.today()
+
+# dd/mm/YY
+thedate = today.strftime("%d-%m-%Y")
 # ------------------------------------------------------------------------------
 
 
@@ -22,8 +30,9 @@ class CovidStatsBot():
         self.base_url = f"https://api.telegram.org/bot{API_KEY}/"
         self.get_updated()
         self.visited = []
-        t_list_cleaner = threading.Thread(target=self.list_cleaner_loop)
-        t_list_cleaner.start()
+        # self.rec_data = 0
+        # t_list_cleaner = threading.Thread(target=self.list_cleaner_loop)
+        # t_list_cleaner.start()
 
     def get_updated(self, offset_value=None):
         try:
@@ -45,11 +54,70 @@ class CovidStatsBot():
         except Exception:
             return None
 
-    def getCurrentChat_id(self):
+    def first_update_id(self):
         try:
-            self.chat_id = self.rec_data["result"][-1]["message"]["chat"]["id"]
+            self.update_id = self.rec_data["result"][0]["update_id"]
+            return self.update_id
+        except Exception:
+            return None
+
+    def process(self, update_id, chat_id):
+        rec_mssg_pincode = self.get_mssg_by_id(update_id)
+        # self.visited.append(update_id)
+        info = vaccineSlotsInfo(rec_mssg_pincode)
+        if info:
+            for x in info:
+                # t = threading.Thread(target=self.mssg_send, args=(chat_id, x))
+                # t.start()
+                self.mssg_send(chat_id, x)
+            print(
+                f"\n\nAll mssgs sent to {chat_id}, update_id:{update_id} for pin:{rec_mssg_pincode}\n\n")
+        else:
+            print(
+                f"\nmssgs probably not sent to {chat_id} for pincode: {rec_mssg_pincode}\n\n")
+
+    def mssg_send(self, chatid, mssg):
+        try:
+            full_url = f"{self.base_url}sendMessage?chat_id={chatid}&text={mssg}"
+            resp = requests.post(full_url)
+            if str(resp) != "<Response [200]>":
+                print(
+                    f"mssg not sent successfully !!\n ERROR CODE is {resp}")
+                return 0
+            else:
+                print(f"mssg sent")
+                return 1
+        except Exception:
+            print("mss_send() didn't execute properly")
+            return 0
+
+    def loop(self, first, last):
+        try:
+            for i in range(first, last+1):
+                this_chat_id = 1  # ?????
+                if i not in self.visited:
+                    t = threading.Thread(
+                        target=self.process, args=(i, this_chat_id))
+                    t.start()
+                    print(f"\n\n\nprocess thread started for id {i}\n\n\n")
+        except Exception as err:
+            print(err)
+
+    def get_first_Chat_id(self):
+        try:
+            self.chat_id = self.rec_data["result"][0]["message"]["chat"]["id"]
             return self.chat_id
         except Exception:
+            return None
+
+    def get_mssg_by_id(self, update_id):
+        try:
+            for d in self.rec_data["result"]:
+                if update_id == d["update_id"]:
+                    recvd_mssg = d["message"]["text"]
+            return recvd_mssg
+        except Exception:
+            print("Something wrong in receiving text from tg bot")
             return None
 
     def getLastmssg(self):
@@ -57,7 +125,7 @@ class CovidStatsBot():
             self.last_recmssg = self.rec_data["result"][-1]["message"]["text"]
             return self.last_recmssg
         except Exception:
-            print("Something wrong in Vaccineinfo()")
+            print("Something wrong in receiving text from tg bot")
             return None
 
     def mssg_send(self, chatid, mssg):
@@ -66,19 +134,22 @@ class CovidStatsBot():
             resp = requests.post(self.full_url)
             if str(resp) != "<Response [200]>":
                 print(f"mssg not sent successfully !!\n ERROR CODE is {resp}")
+                return 0
             else:
-                print(f"mssg sent successfully: {mssg}")
+                print(f"mssg sent successfully")
+                return 1
         except Exception:
             print("mss_send() didn't execute properly")
+            return 0
 
     def list_cleaner_loop(self):
         while True:
-            if len(self.visited > 50):
+            if len(self.visited) > 50:
                 self.visited.clear()
-            sleep(200)
+            sleep(8)
 
-
-obj1 = CovidStatsBot()
 
 if __name__ == "__main__":
+    obj1 = CovidStatsBot()
     print(obj1.get_updated())
+    obj1.loop()
