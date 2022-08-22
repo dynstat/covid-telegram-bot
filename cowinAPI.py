@@ -32,7 +32,7 @@ def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
         else:
             return ["No data found for this pincode, try another one"]
     except Exception:
-        return [None]
+        return ["Probably some error occured due to wrong ipnut"]
 
 
 if __name__ == "__main__":
