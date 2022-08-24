@@ -7,10 +7,7 @@ flag = 1
 def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
     global flag
     try:
-        if str(type(int(pin))) == "<class 'int'>":
-            flag = 1
-        else:
-            flag = 0
+        flag = 1 if str(type(int(pin))) == "<class 'int'>" else 0
     except Exception:
         return ["probably Not a pincode"]
     if not flag:
