@@ -20,6 +20,7 @@ def read_API_fromConfig(config):
     return parser.get('creds', 'APIKEY')
 
 
+# create a config.cfg file to prevent API KEY to be visible in the main program
 API_KEY = read_API_fromConfig('config.cfg')
 
 # print(API_KEY)
@@ -28,7 +29,7 @@ API_KEY = read_API_fromConfig('config.cfg')
 class CovidStatsBot():
     def __init__(self, offset_value=None) -> None:
         self.base_url = f"https://api.telegram.org/bot{API_KEY}/"
-        self.get_updated()
+        self.get_updated() # to make the variables of get_updated() method accessable to all the other method of the class.
 
     def get_updated(self, offset_value=None):
         try:
