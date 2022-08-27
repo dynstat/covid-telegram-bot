@@ -1,10 +1,8 @@
 
 from datetime import date
-from logging import exception
-from time import sleep
 import requests
 import configparser as cfg
-import threading
+
 from cowinAPI import vaccineSlotsInfo
 
 today = date.today()
@@ -29,7 +27,8 @@ API_KEY = read_API_fromConfig('config.cfg')
 class CovidStatsBot():
     def __init__(self, offset_value=None) -> None:
         self.base_url = f"https://api.telegram.org/bot{API_KEY}/"
-        self.get_updated() # to make the variables of get_updated() method accessable to all the other method of the class.
+        # to make the variables of get_updated() method accessable to all the other method of the class.
+        self.get_updated()
 
     def get_updated(self, offset_value=None):
         try:
