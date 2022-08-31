@@ -87,5 +87,5 @@ while True:
         except Exception:
             print("Update is empty...\n\n")
 
-
-print("hmm..")
+# should not reach here !!
+print("Should not print this.")
