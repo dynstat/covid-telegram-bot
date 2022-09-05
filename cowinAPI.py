@@ -4,6 +4,7 @@ from datetime import date
 flag = 1
 
 
+# Function to get the basic updated information regarding the covid vaccination slots
 def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
     global flag
     try:
@@ -14,10 +15,10 @@ def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
         return ["did not work"]
     try:
         full_url = f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode={pin}&date={date}"
-        # print("full url = ", full_url)
+
         req = requests.get(full_url)
         received_data = req.json()
-        # print(received_data)
+        
         info_list = []
         for list_items in received_data["sessions"]:
             slot = f'name = {list_items["name"]}\naddress = {list_items["address"]}\nstate name = {list_items["state_name"]}\ndistrict name = {list_items["district_name"]}\nblock name = {list_items["block_name"]}\npincode = {list_items["pincode"]}\nfrom {list_items["from"]} to {list_items["to"]}\nfee : {list_items["fee_type"]}\nvaccine type : {list_items["vaccine"]}\n'
@@ -29,7 +30,7 @@ def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
         else:
             return ["No data found for this pincode, try another one"]
     except Exception:
-        return ["Probably some error occured due to wrong ipnut"]
+        return ["Probably some error occured due to wrong input"]
 
 
 if __name__ == "__main__":
@@ -37,8 +38,6 @@ if __name__ == "__main__":
 
     # dd/mm/YY
     thedate = today.strftime("%d-%m-%Y")
-    # print("d1 =", thedate)
-
     pincode = '110085'
 
     print(vaccineSlotsInfo(pincode))
