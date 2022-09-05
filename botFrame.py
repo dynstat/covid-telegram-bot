@@ -1,4 +1,4 @@
-
+#  framework for the telegram bot with simple methods.
 from datetime import date
 import requests
 import configparser as cfg
@@ -20,9 +20,6 @@ def read_API_fromConfig(config):
 
 # create a config.cfg file to prevent API KEY to be visible in the main program
 API_KEY = read_API_fromConfig('config.cfg')
-
-# print(API_KEY)
-
 
 class CovidStatsBot():
     def __init__(self, offset_value=None) -> None:
@@ -86,18 +83,6 @@ class CovidStatsBot():
         except Exception:
             print("mss_send() didn't execute properly")
             return 0
-
-    # def loop(self, first, last):
-    #     try:
-    #         for i in range(first, last+1):
-    #             this_chat_id = 1  # ?????
-    #             if i not in self.visited:
-    #                 t = threading.Thread(
-    #                     target=self.process, args=(i, this_chat_id))
-    #                 t.start()
-    #                 print(f"\n\n\nprocess thread started for id {i}\n\n\n")
-    #     except Exception as err:
-    #         print(err)
 
     def get_first_Chat_id(self):
         try:
