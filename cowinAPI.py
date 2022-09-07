@@ -3,7 +3,6 @@ from datetime import date
 
 flag = 1
 
-
 # Function to get the basic updated information regarding the covid vaccination slots
 def vaccineSlotsInfo(pin, date=(date.today()).strftime("%d-%m-%Y")):
     global flag

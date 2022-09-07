@@ -33,7 +33,6 @@ class CovidStatsBot():
                 self.full_url = f"{self.base_url}getUpdates?offset={offset_value}&timeout=100"
             else:
                 self.full_url = f"{self.base_url}getUpdates?timeout=100"
-            # print(self.full_url)  # to print the url n test it in the browser
             r = requests.get(self.full_url)
             self.rec_data = r.json()
             return self.rec_data
