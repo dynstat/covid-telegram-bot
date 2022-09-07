@@ -8,14 +8,6 @@ from cowinAPI import vaccineSlotsInfo
 import requests
 
 bot = cbot()  # created the object of CovidStatsBot Class
-# data = bot.get_updated()
-# currentchat_id = bot.getCurrentChat_id()   # to get the latest chat_id
-# lastMssgSentByUser = bot.getLastmssg()
-# # data = bot.get_updated()
-# last_update_id = bot.lastUpdate_id()
-# lastData = bot.get_updated(offset_value=last_update_id)
-
-# info = vaccineSlotsInfo(lastMssgSentByUser)
 
 
 pinUpdateid_List = []
@@ -37,7 +29,7 @@ def loop_large_items(index, total_items):
 
 last_id = bot.lastUpdate_id()
 while True:
-    sleep(1)
+    # sleep(1)
     # updating for any new data
     data_rec = bot.get_updated(offset_value=last_id)
     if data_rec:
@@ -85,7 +77,7 @@ while True:
                         last_id += 1
 
         except Exception:
-            print("Update is empty...\n\n")
+            print("Update is empty...\n\n") # no new request
 
 # should not reach here !!
 print("Should not print this.")
